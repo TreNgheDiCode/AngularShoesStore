@@ -7,9 +7,11 @@ namespace ECommerce.API.DataAccess
         List<ProductCategory> GetProductCategories();
         ProductCategory GetProductCategory(int id);
         Offer GetOffer(int id);
+        List<Product> GetAlls();
         List<Product> GetProducts(string category, string subcategory, int count); 
         Product GetProduct(int id);
         bool InsertUser(User user);
+        bool InsertProduct(Product product);
         string IsUserPresent(string email, string password);
         void InsertReview(Review review);
         List<Review> GetProductReviews(int productId);
@@ -23,6 +25,7 @@ namespace ECommerce.API.DataAccess
         int InsertOrder(Order order);
         List<User> GetAllUser();
         List<Product> SearchProductsByTitle(string title);
+        bool DeleteProduct(int productid);
         bool DeleteCartItem(int userId, int cartItemId);
     }
 }

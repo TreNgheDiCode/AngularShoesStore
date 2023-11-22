@@ -45,7 +45,6 @@ export class LoginComponent implements OnInit {
         if (res.toString() !== 'invalid') {
           this.message = 'Đăng nhập thành công';
           this.utilityService.setUser(res.toString());
-          console.log(this.utilityService.getUser());
           setTimeout(() => {
             this.router.navigate(['/home']).then(() => {
               // Đợi một khoảng thời gian ngắn (ví dụ: 500ms) trước khi tải lại trang

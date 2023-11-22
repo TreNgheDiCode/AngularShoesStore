@@ -287,6 +287,45 @@ namespace ECommerce.API.DataAccess
             return reviews;
         }
 
+        public List<Product> GetAlls()
+        {
+            var products = new List<Product>();
+            using (SqlConnection connection = new(dbconnection))
+            {
+                SqlCommand command = new()
+                {
+                    Connection = connection
+                };
+
+                string query = "SELECT * FROM Products";
+                command.CommandText = query;
+
+                connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    var product = new Product()
+                    {
+                        Id = (int)reader["ProductId"],
+                        Title = (string)reader["Title"],
+                        Description = (string)reader["Description"],
+                        Price = (double)reader["Price"],
+                        Quantity = (int)reader["Quantity"],
+                        ImageName = (string)reader["ImageName"]
+                    };
+
+                    var categoryid = (int)reader["CategoryId"];
+                    product.ProductCategory = GetProductCategory(categoryid);
+
+                    var offerid = (int)reader["OfferId"];
+                    product.Offer = GetOffer(offerid);
+
+                    products.Add(product);
+                }
+            }
+            return products;
+        }
+
         public List<Product> GetProducts(string category, string subcategory, int count)
         {
             var products = new List<Product>();
@@ -589,6 +628,41 @@ namespace ECommerce.API.DataAccess
             return true;
         }
 
+        public bool InsertProduct(Product product)
+        {
+            using (SqlConnection connection = new(dbconnection))
+            {
+                SqlCommand command = new()
+                {
+                    Connection = connection
+                };
+                connection.Open();
+
+                string query = "SELECT COUNT(*) FROM Products WHERE Title='" + product.Title + "';";
+                command.CommandText = query;
+                int count = (int)command.ExecuteScalar();
+                if (count > 0)
+                {
+                    connection.Close();
+                    return false;
+                }
+
+                query = "INSERT INTO Products (Title, Description, CategoryId, OfferId, Price, Quantity, ImageName) values (@fn, @ln, @add, @mb, @em, @pwd, @img);";
+
+                command.CommandText = query;
+                command.Parameters.Add("@fn", System.Data.SqlDbType.NVarChar).Value = product.Title;
+                command.Parameters.Add("@ln", System.Data.SqlDbType.NVarChar).Value = product.Description;
+                command.Parameters.Add("@add", System.Data.SqlDbType.NVarChar).Value = 1;
+                command.Parameters.Add("@mb", System.Data.SqlDbType.NVarChar).Value = 1;
+                command.Parameters.Add("@em", System.Data.SqlDbType.NVarChar).Value = product.Price;
+                command.Parameters.Add("@pwd", System.Data.SqlDbType.NVarChar).Value = product.Quantity;
+                command.Parameters.Add("@img", System.Data.SqlDbType.NVarChar).Value = "";
+
+                command.ExecuteNonQuery();
+            }
+            return true;
+        }
+
         public string IsUserPresent(string email, string password)
         {
             User user = new();
@@ -721,6 +795,37 @@ namespace ECommerce.API.DataAccess
             }
             return products;
         }
+        public bool DeleteProduct(int productId)
+        {
+            using (SqlConnection connection = new SqlConnection(dbconnection))
+            {
+                SqlCommand command = new SqlCommand
+                {
+                    Connection = connection
+                };
+
+                connection.Open();
+
+
+                string query = "SELECT COUNT(*) FROM Products WHERE ProductId = @productItemId;";
+                command.CommandText = query;
+                command.Parameters.AddWithValue("@productItemId", productId);
+
+                int count = (int)command.ExecuteScalar();
+                if (count == 0)
+                {
+                    return false;
+                }
+
+
+                query = "DELETE FROM Products WHERE ProductId = @productItemId;";
+                command.CommandText = query;
+                int rowsAffected = command.ExecuteNonQuery();
+
+                return rowsAffected > 0;
+            }
+        }
+
         public bool DeleteCartItem(int userId, int cartItemId)
         {
             using (SqlConnection connection = new SqlConnection(dbconnection))

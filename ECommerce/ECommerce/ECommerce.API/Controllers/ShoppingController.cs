@@ -24,6 +24,12 @@ namespace ECommerce.API.Controllers
             return Ok(result);
         }
 
+        [HttpGet("GetAlls")]
+        public IActionResult GetAlls()        {
+            var result = dataAccess.GetAlls();
+            return Ok(result);
+        }
+
         [HttpGet("GetProducts")]
         public IActionResult GetProducts(string category, string subcategory, int count)
         {
@@ -36,6 +42,17 @@ namespace ECommerce.API.Controllers
         {
             var result = dataAccess.GetProduct(id);
             return Ok(result);
+        }
+
+        [HttpPost("AddProduct")]
+        public IActionResult AddProduct([FromBody] Product product)
+        {
+            var result = dataAccess.InsertProduct(product);
+
+            string? message;
+            if (result) message = "Thêm thành công";
+            else message = "Thêm thất bại";
+            return Ok(message);
         }
 
         [HttpPost("RegisterUser")]
@@ -57,6 +74,7 @@ namespace ECommerce.API.Controllers
         {
             var token = dataAccess.IsUserPresent(user.Email, user.Password);
             if (token == "") token = "invalid";
+            if (token != "invalid" && user.Email != "gabayan170@gmail.com") token = "no-permission";
             return Ok(token);
         }
 
@@ -156,6 +174,21 @@ namespace ECommerce.API.Controllers
                 return StatusCode(500, $"An error occurred while searching for products: {ex.Message}");
             }
         }
+
+        [HttpDelete("DeleteProduct/{productId}")]
+        public IActionResult DeleteCartItem(int productId)
+        {
+            bool isDeleted = dataAccess.DeleteProduct(productId);
+            if (isDeleted)
+            {
+                return Ok();
+            }
+            else
+            {
+                return NotFound("Không tìm thấy sản phẩm");
+            }
+        }
+
         [HttpDelete("deleteCartItem/{userId}/{cartItemId}")]
         public IActionResult DeleteCartItem(int userId, int cartItemId)
         {

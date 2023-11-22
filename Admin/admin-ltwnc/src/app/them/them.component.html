@@ -1,0 +1,147 @@
+<div class="container">
+  <div class="register-form">
+    <div class="register-img">
+      <img src="../../assets/Images/Baner/Register 1.png" alt="Baner" />
+    </div>
+    <div class="register-form-right">
+      <form [formGroup]="addForm" (ngSubmit)="add()">
+        <p class="form-title">THÊM SẢN PHẨM</p>
+
+        <!-- First Name and Last Name -->
+        <div class="mb-3">
+          <div class="col">
+            <input
+              type="text"
+              class="form-control form-input"
+              id="title"
+              formControlName="title"
+              placeholder="Tên sản phẩm"
+            />
+
+            <!-- Errors -->
+            <div
+              class="form-text text-danger"
+              *ngIf="Title.errors?.['required'] && (Title.dirty || Title.touched)"
+            >
+              Yêu cầu nhập tên sản phẩm.
+            </div>
+
+            <div
+              class="form-text text-danger"
+              *ngIf="Description.errors?.['pattern'] && (Title.dirty || Title.touched)"
+            >
+              Tên sản phẩm nên bắt đầu bằng một chữ cái.
+            </div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <div class="col">
+            <input
+              type="text"
+              class="form-control form-input"
+              id="lastname"
+              formControlName="description"
+              placeholder="Mô tả sản phẩm"
+            />
+
+            <!-- Errors -->
+            <div
+              class="form-text text-danger"
+              *ngIf="Description.errors?.['required'] && (Description.dirty || Description.touched)"
+            >
+              Yêu cầu nhập mô tả.
+            </div>
+            <div
+              class="form-text text-danger"
+              *ngIf="!!Description.errors?.['minlength'] && (Description.dirty || Description.touched)"
+            >
+              Mô tả quá ngắn.
+            </div>
+            <div
+              class="form-text text-danger"
+              *ngIf="Description.errors?.['pattern'] && (Description.dirty || Description.touched)"
+            >
+              Mô tả nên bắt đầu bằng một chữ cái.
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <input
+            type="number"
+            class="form-control form-input"
+            id="offer"
+            formControlName="offer"
+            placeholder="Giảm giá"
+          />
+
+          <!-- Errors -->
+          <div
+            class="form-text text-danger"
+            *ngIf="Offer.errors?.['required'] && (Offer.dirty || Offer.touched)"
+          >
+            Yêu cầu nhập giảm giá.
+          </div>
+          <div
+            class="form-text text-danger"
+            *ngIf="Offer.errors?.['email'] && (Offer.dirty || Offer.touched)"
+          >
+            Giảm giá không hợp lệ.
+          </div>
+        </div>
+
+        <!-- Address -->
+        <div class="mb-3">
+          <input
+            type="number"
+            class="form-control form-input"
+            id="price"
+            formControlName="price"
+            placeholder="Giá"
+          />
+
+          <!-- Errors -->
+          <div
+            class="form-text text-danger"
+            *ngIf="Price.errors?.['required'] && (Price.dirty || Price.touched)"
+          >
+            Yêu cầu nhập giá.
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <input
+            type="number"
+            class="form-control form-input"
+            id="quantity"
+            formControlName="quantity"
+            placeholder="Số lượng"
+          />
+
+          <!-- Errors -->
+          <div
+            class="form-text text-danger"
+            *ngIf="Quantity.errors?.['required'] && (Quantity.dirty || Quantity.touched)"
+          >
+            Yêu cầu nhập số lượng.
+          </div>
+        </div>
+
+        <!-- Create Account Button -->
+        <div>
+          <button
+            type="submit"
+            class="btn-register-submit"
+            [disabled]="addForm.invalid"
+          >
+            Thêm
+          </button>
+        </div>
+
+        <div class="mt-3 text-center">
+          <h5 class="text-success">{{ message }}</h5>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

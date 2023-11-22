@@ -1,0 +1,26 @@
+<header>
+  <div>
+    <a href="#">UDVY</a>
+    <nav class="h-100" style="display: flex">
+      <ul class="child-menu-fourth">
+        <li>
+          <span *ngIf="utilityService.isLoggedIn()">
+            <span *ngFor="let user of users"
+              >Xin chào, {{ user.firstName + " " + user.lastName }}</span
+            >
+          </span>
+          <button
+            type="button"
+            (click)="utilityService.logoutUser()"
+            *ngIf="utilityService.isLoggedIn()"
+          >
+            <i
+              class="fa-solid fa-right-from-bracket"
+              style="color: #000000; font-size: 30px; padding-left: 10px"
+            ></i>
+          </button>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>

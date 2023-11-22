@@ -105,7 +105,7 @@
       <ul class="child-menu-third">
         <li>
           <button type="button" data-bs-toggle="modal" data-bs-target="#generalmodal" (click)="OpenLogin()"
-            *ngIf="!utilityService.isLoggedIn()" style="margin-right: 7px">
+            *ngIf="!utilityService.isLoggedIn" style="margin-right: 7px">
             Đăng nhập
           </button>
         </li>
@@ -138,16 +138,3 @@
     </nav>
   </div>
 </header>
-<!-- <div class="modal fade" id="generalmodal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" #modalTitle></h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        <ng-container #container></ng-container>
-      </div>
-    </div>
-  </div>
-</div> -->

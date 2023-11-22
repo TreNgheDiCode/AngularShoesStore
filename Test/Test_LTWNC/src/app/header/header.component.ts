@@ -2,13 +2,10 @@ import {
   Component,
   ElementRef,
   OnInit,
-  Type,
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
-import { LoginComponent } from '../login/login.component';
 import { Category, NavigationItem, Product } from '../models/models';
-import { RegisterComponent } from '../register/register.component';
 import { NavigationService } from '../services/navigation.service';
 import { UtilityService } from '../services/utility.service';
 import { User } from '../models/models';
@@ -24,14 +21,14 @@ export class HeaderComponent implements OnInit {
   @ViewChild('container', { read: ViewContainerRef, static: true })
   container!: ViewContainerRef;
   cartItems: number = 0;
-  users:User[]=[];
+  users: User[] = [];
   products: Product[] = [];
 
   navigationList: NavigationItem[] = [];
   constructor(
     private navigationService: NavigationService,
     public utilityService: UtilityService,
-    public router : Router
+    public router: Router
   ) {}
 
   ngOnInit(): void {
@@ -96,22 +93,22 @@ export class HeaderComponent implements OnInit {
       const title = inputElement.value;
       // Gọi phương thức searchProductsByTitle từ NavigationService
       // để lấy kết quả tìm kiếm
-      this.navigationService.searchProductsByTitle(title).subscribe(
-        (results) => {
+      this.navigationService
+        .searchProductsByTitle(title)
+        .subscribe((results) => {
           // Xử lý kết quả tìm kiếm ở đây, ví dụ: hiển thị chúng trên giao diện người dùng
           this.utilityService.setSearchResults(results);
           console.log('Kết quả tìm kiếm:', results);
           this.router.navigate(['/search']);
-        }
-      );
+        });
     } else {
       console.warn('Phần tử nhập là null.');
     }
   }
-  OpenRegister(){
+  OpenRegister() {
     this.router.navigate(['/register']);
   }
-  OpenLogin(){
+  OpenLogin() {
     this.router.navigate(['/login']);
   }
 }
